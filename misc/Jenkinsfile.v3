@@ -68,6 +68,7 @@ pipeline {
             steps {
                 script {
                     echo "Deploying the application ..."
+                    checkout scm
 
                     // def dockerCommand = 'docker run -d -p 3080:3080 alexanderduply/react-nodejs-example:1.0'
                     def ec2Instance = "ec2-user@3.120.130.240"
