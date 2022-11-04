@@ -69,14 +69,15 @@ pipeline {
                 script {
                     echo "Deploying the application ..."
                     checkout scm
+                    sh 'ls -la'
 
                     // def dockerCommand = 'docker run -d -p 3080:3080 alexanderduply/react-nodejs-example:1.0'
-                    def ec2Instance = "ec2-user@3.120.130.240"
-                    def dockerCommand = 'docker-compose up -d'
-                    sshagent(['ec2-server-key']) {
-                      sh "scp -o StrictHostKeyChecking=no ../docker-compose.yaml ${ec2Instance}:/home/ec2-user"
-                      sh "ssh -o StrictHostKeyChecking=no ${ec2Instance} ${dockerCommand}"
-                    }
+                    // def ec2Instance = "ec2-user@3.120.130.240"
+                    // def dockerCommand = 'docker-compose up -d'
+                    // sshagent(['ec2-server-key']) {
+                    //   sh "scp -o StrictHostKeyChecking=no ../docker-compose.yaml ${ec2Instance}:/home/ec2-user"
+                    //   sh "ssh -o StrictHostKeyChecking=no ${ec2Instance} ${dockerCommand}"
+                    // }
                 }
             }
         }
