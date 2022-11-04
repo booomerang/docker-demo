@@ -68,7 +68,7 @@ pipeline {
             steps {
                 script {
                     echo "Deploying the application ..."
-                    checkout scm
+                    //checkout scm
                     sh 'ls -la'
 
                     // def dockerCommand = 'docker run -d -p 3080:3080 alexanderduply/react-nodejs-example:1.0'
