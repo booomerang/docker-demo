@@ -8,10 +8,14 @@ pipeline {
         IMAGE_NAME = "alexanderduply/nodejs-docker-example:"
     }
     stages {
-        stage('Preparation') {
-            checkout scm
-            sh "git rev-parse --short HEAD > .git/commit-id"
-            commit_id = readFile('.git/commit-id').trim()
+        stage('preparation') {
+            steps {
+                script {
+                  checkout scm
+                  sh "git rev-parse --short HEAD > .git/commit-id"
+                  commit_id = readFile('.git/commit-id').trim()
+                }
+            }
         }
         stage('test') {
             steps {
