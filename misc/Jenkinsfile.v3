@@ -21,8 +21,8 @@ pipeline {
             steps {
                 script {
                     echo "Testing the application..."
-                    echo ${commit_id}
-                    echo ${env.IMAGE_NAME}
+                    echo "${commit_id}"
+                    echo "${env.IMAGE_NAME}"
                     def myTestContainer = docker.image('node:4.6')
                     myTestContainer.pull()
                     myTestContainer.inside {
