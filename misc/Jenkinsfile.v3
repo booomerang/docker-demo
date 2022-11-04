@@ -1,0 +1,69 @@
+#!/usr/bin/env groovy
+
+def commit_id
+
+pipeline {
+    agent any
+    environment {
+        IMAGE_NAME = "alexanderduply/nodejs-docker-example:"
+    }
+    stages {
+        stage('Preparation') {
+            checkout scm
+            sh "git rev-parse --short HEAD > .git/commit-id"
+            commit_id = readFile('.git/commit-id').trim()
+        }
+        stage('test') {
+            steps {
+                script {
+                    echo "Testing the application..."
+                    echo ${commit_id}
+                    echo ${env.IMAGE_NAME}
+                    def myTestContainer = docker.image('node:4.6')
+                    myTestContainer.pull()
+                    myTestContainer.inside {
+                      sh 'npm install --only=dev'
+                      sh 'npm test'
+                    }
+                }
+            }
+        }
+        stage('test with a DB') {
+            steps {
+                script {
+                    echo "Testing the application with DB..."
+                    // def mysql = docker.image('mysql').run("-e MYSQL_ALLOW_EMPTY_PASSWORD=yes") 
+                    // def myTestContainer = docker.image('node:4.6')
+                    // myTestContainer.pull()
+                    // myTestContainer.inside("--link ${mysql.id}:mysql") { // using linking, mysql will be available at host: mysql, port: 3306
+                    //       sh 'npm install --only=dev' 
+                    //       sh 'npm test'                     
+                    // }                                   
+                    // mysql.stop()
+                }
+            }
+        }
+        stage('build') {
+            steps {
+                script {
+                   echo 'Building docker image...'
+                   //buildImage(env.IMAGE_NAME)
+                   // sh 'docker build -t $imageName .'
+                   //dockerLogin()
+                   //dockerPush(env.IMAGE_NAME)
+                }
+            }
+        }
+        stage('deploy') {
+            steps {
+                script {
+                    echo "Deploying the application..."
+                    // def dockerCommand = 'docker run -d -p 3080:3080 alexanderduply/react-nodejs-example:1.0'
+                    // sshagent(['ec2-server-key']) {
+                    //     sh "ssh -o StrictHostKeyChecking=no ec2-user@3.120.130.240 ${dockerCommand}"
+                    // }
+                }
+            }
+        }
+    }
+}
